@@ -31,6 +31,13 @@ def add_task(desc):
         json.dump(data, f)
         f.write('\n')
 
+def update_task(ind, inp):
+    tasks = get_tasks()
+    for i in tasks:
+        if int(i['id']) == int(ind):
+            i['description'] = ' '.join(inp)
+            i['updatedAt'] = f'{datetime.datetime.now()}'
+    write_to_file(tasks)
 
 # get all task
 def get_tasks():
@@ -91,6 +98,9 @@ def tasker():
             mark_in_progres(message[16:])
         if 'mark-done' in message:
             mark_done(message[9:])
+        if 'update' in message:
+            wrt = message.split()
+            update_task(ind=wrt[1], inp=wrt[2:])
 
 
 tasker()
