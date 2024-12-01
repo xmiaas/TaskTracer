@@ -1,6 +1,7 @@
 import json
 import datetime
 
+
 def write_to_file(where):
     with open('tasks.json', 'w') as f:
         for i in where:
@@ -55,11 +56,20 @@ def delete_task(num):
     write_to_file(tsk)
     return print(tsk)
 
+
 def mark_in_progres(ind):
     tsk = get_tasks()
     for i in tsk:
         if int(i['id']) == int(ind):
             i['status'] = 'in-progress'
+    write_to_file(tsk)
+
+
+def mark_done(ind):
+    tsk = get_tasks()
+    for i in tsk:
+        if int(i['id']) == int(ind):
+            i['status'] = 'done'
     write_to_file(tsk)
 
 
@@ -79,6 +89,8 @@ def tasker():
             delete_task(message[6:])
         if 'mark-in-progress' in message:
             mark_in_progres(message[16:])
+        if 'mark-done' in message:
+            mark_done(message[9:])
 
 
 tasker()
