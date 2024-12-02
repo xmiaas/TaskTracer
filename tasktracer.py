@@ -31,6 +31,7 @@ def add_task(desc):
         json.dump(data, f)
         f.write('\n')
 
+
 def update_task(ind, inp):
     tasks = get_tasks()
     for i in tasks:
@@ -38,6 +39,7 @@ def update_task(ind, inp):
             i['description'] = ' '.join(inp)
             i['updatedAt'] = f'{datetime.datetime.now()}'
     write_to_file(tasks)
+
 
 # get all task
 def get_tasks():
@@ -80,6 +82,12 @@ def mark_done(ind):
     write_to_file(tsk)
 
 
+def lists(inp):
+    for i in get_tasks():
+        if i['status'] == inp:
+            print(f'{i["id"]}){i["description"]}')
+
+
 def tasker():
     print('Welcome to Task Tracker \nPrint /help to get a list of commands\nIf you want to exit write Exit')
 
@@ -89,9 +97,16 @@ def tasker():
             break
         if message[:3] == 'add':
             add_task(message[3:])
-        if message == 'list':
-            for i in get_tasks():
-                print(f'{i["id"]}) {i["description"]}')
+        if 'list' in message:
+            x = message.split()
+            if len(x) == 1:
+                for i in get_tasks():
+                    print(f'{i["id"]}){i["description"]}')
+            else:
+                lists(x[-1])
+
+
+
         if message[:6] == 'delete':
             delete_task(message[6:])
         if 'mark-in-progress' in message:
