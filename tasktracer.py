@@ -63,7 +63,6 @@ def delete_task(num):
         tsk[i]['id'] = i + 1
 
     write_to_file(tsk)
-    return print(tsk)
 
 
 def mark_in_progres(ind):
@@ -95,20 +94,32 @@ def tasker():
         message = input()
         if message == 'Exit' or message == 'exit':
             break
+        if message == '/help':
+            print("""Write 'list' to see the list of all tasks.
+Write 'add' and name of task separated by space to add task.
+Write 'update' and the index of the task from the list to update it.
+Write 'delete' and the index of the task from the list to delete it.
+Write 'mark-in-progress' and the index of the task from the list to change status of task to "in-progress".
+Write 'mark-done' and the index of the task from the list to change status of task to "in-progress".
+Write 'list done' or 'list todo' or 'list in-progress' to view a tasks by status".
+
+            """)
         if message[:3] == 'add':
             add_task(message[3:])
+            print('Task added')
         if 'list' in message:
             x = message.split()
             if len(x) == 1:
                 for i in get_tasks():
-                    print(f'{i["id"]}){i["description"]}')
+                    tx = f'{i["id"]}){i["description"]}.'
+                    print(tx.replace(' ', ''), 'Status:', i['status'])
+
             else:
                 lists(x[-1])
 
-
-
         if message[:6] == 'delete':
             delete_task(message[6:])
+            print('Task deleted')
         if 'mark-in-progress' in message:
             mark_in_progres(message[16:])
         if 'mark-done' in message:
@@ -116,6 +127,7 @@ def tasker():
         if 'update' in message:
             wrt = message.split()
             update_task(ind=wrt[1], inp=wrt[2:])
+            print('Task updated')
 
 
 tasker()
